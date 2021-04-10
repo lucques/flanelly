@@ -19,7 +19,13 @@ pub enum ConstLat {
 
 impl SemiLat for ConstLat {
     fn join_bin(self: &Self, other: &Self) -> Self {
-        todo!()
+        match (self, other) {
+            (Top, _) => { Top }
+            (_, Top) => { Top }
+            (Bot, y) => { y.clone() }
+            (x, Bot) => { x.clone() }
+            (Const(m), Const(n)) => { if m == n { Const(*m) } else { Top } }
+        }
     }
 }
 
@@ -129,7 +135,9 @@ impl FlowSemantics for MultiConstLat {
             Node::Branch(_) => {mem.clone()}
             // Update variable on `Assign`
             Node::Assign(v, a) => {
-                todo!()
+                let mut mem_upd = mem.clone();
+                mem_upd.insert(v.clone(), mem.eval_aexp(a));
+                mem_upd
             }
         }
     }

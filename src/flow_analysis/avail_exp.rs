@@ -45,7 +45,30 @@ impl SemiLat for ExpSetLat {
 
 impl FlowSemantics for ExpSetLat {
     fn eval_transfer_function(n: &Node, set: &Self) -> Self {
-        todo!()
+        match n {
+            // `Init`, `Terminal`, `Skip` have no interesting semantics: They don't change anything about available expressions
+            Node::Init => {set.clone()}
+            Node::Terminal => {set.clone()}
+            Node::Skip => {set.clone()}
+            // Arithmetic expressions evaluated in the guard are marked as "available"
+            Node::Branch(b) => {
+                let mut set_upd = set.clone();
+                // Add new sub expressions
+                set_upd.extend(b.sub_aexps());
+                set_upd
+            }
+            // Two things need to be considered:
+            // 1) "Available" expressions that depend on `x` become "unavailable"
+            // 2) Expressions evaluated in the right-hand side become "available"
+            Node::Assign(x, a) => {
+                let mut set_upd = set.clone();
+                // First remove all expressions that contain variable `x`
+                set_upd.clear_var(x);
+                // Then add new sub expressions
+                set_upd.extend(a.sub_aexps());
+                set_upd
+            }
+        }
     }
 
     /// In the beginning, no expression is available
