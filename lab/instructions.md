@@ -50,7 +50,7 @@ Have a look at the definition of the boolean expressions (`BExp` in `bexp.rs`). 
 
 **Task:** Implement all four extensions. Start with 1 and 2. For 3 and 4, you have to make sure to deal with parentheses in the right way (e.g., conjunction has a higher precedence than disjunction). Take inspiration from how parentheses are handled in arithmetic expressions: You may proceed in an analogous way! (Multiplication behaves like conjunction, addition behaves like disjunction, arithmetic negation behaves like boolean negation)
 
-## Exercise 3: AST to CFG
+## Exercise 4: AST to CFG
 
 Have a look at the definition of a CFG (`cfg.rs`), which is a graph together with an initial node. For the representation of the graph, we use the `petgraph` library. A `Graph` is parameterized by some `Node` and `Edge` type, which we carefully define so that it fulfills the requirements of a CFG:
 
@@ -64,7 +64,7 @@ Now have a look now at the `map` method of `Cfg<A>`. It transforms a `Cfg<A>` in
 **Task:** Fill in the implementation details of the `map` method of `Cfg<A>`, marked by `todo!`. Use the `map` method of `petgraph.Graph`. Because a new CFG is to be constructed (`map` is "immutable"), you will need to clone nodes (which is possible, since the `Clone` trait is implemented for `Node`).
 
 
-## Exercise 4: Constant Propagation Lattices
+## Exercise 5: Constant Propagation Lattices
 
 Have a look at the abstract definitions of a semi-lattice (`SemiLat` in `flow_analysis/common.rs`) and a transfer function (`eval_transfer_function` in `flow_analysis/common.rs`). Then take a further look at their concrete implementations for the constant propagation scheme (`flow_analysis/const_prop.rs`).
 
@@ -79,13 +79,13 @@ All in all, the *constant propagation* consists of the following components:
 
 **Task:** Fill in the implementation details for `ConstLat` and `MultiConstLat`, marked by `todo!`.
 
-## Exercise 5: MFP Analysis
+## Exercise 6: MFP Analysis
 
 The core algorithm, namely the MFP algorithm, will be implemented in the `mfp` function (`flow_analysis/mfp.rs`). First, take a look at the type signature of `mfp`: It requires `L` to be a semi-lattice (`SemiLat`) and it requires the definition of the transfer functions (`FlowSemantics`). When given an unannotated CFG (`RawAnnot`), the analysis will then yield a CFG with each node annoted by two elements of `L` (`MfpAnnot<L>`).
 
 **Task:** Fill in the implementation details of the `mfp` function marked by `todo!`.
 
-## Exercise 6: Available Expressions Analysis
+## Exercise 7: Available Expressions Analysis
 
 Have a look at the implementation of the *available expressions* scheme (`flow_analysis/avail_exp.rs`). As for the *constant propagation* scheme, it contains different components:
 - `ExpSetLat`, which is the semi-lattice used by the analysis. It is simply a wrapper of `HashSet`
